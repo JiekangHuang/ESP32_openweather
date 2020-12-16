@@ -96,6 +96,7 @@ void loop()
             SerialMon.println(humidity);
             got_data_flag = true;
         } else {
+            timer = millis();
             got_data_flag = false;
         }
 
