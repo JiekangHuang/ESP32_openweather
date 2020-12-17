@@ -67,6 +67,6 @@ SoftwareSerial SoftSerial(8, 9);     // RX:8 TX:9
 
 #define HTTP_PORT 443
 #define HTTP_SERVER "api.openweathermap.org"
-#define HTTP_API "/data/2.5/weather?q=" CITY "&APPID=" APPID "&units=" UNITS
+#define HTTP_API "/data/2.5/forecast?q=" CITY "&APPID=" APPID "&units=" UNITS "&cnt=1"
 
 #endif /* _CONFIG_H */

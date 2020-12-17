@@ -41,8 +41,8 @@ SSLClient sslClient(tcpClient, TAs, (size_t)TAs_NUM, A0);
 // 建立 HTTP Client，下層接 SSL Client
 HttpClient httpClient = HttpClient(sslClient, HTTP_SERVER, HTTP_PORT);
 
-// 存放溫溼度、城市名稱
-float       temperature, humidity;
+// 存放溫溼度、降雨機率、城市名稱
+float       temperature, humidity, pop;
 const char *city;
 bool        got_data_flag = false;
 
@@ -88,12 +88,18 @@ void loop()
         if (state_code == 200) {
             DynamicJsonDocument doc(1024);
             deserializeJson(doc, body.c_str());
-            temperature = doc["main"]["temp"];
-            humidity    = doc["main"]["humidity"];
-            city        = doc["name"];
+            temperature = doc["list"][0]["main"]["temp"];
+            humidity    = doc["list"][0]["main"]["humidity"];
+            pop         = doc["list"][0]["pop"];
+            city        = doc["city"]["name"];
+            SerialMon.print("city: ");
             SerialMon.println(city);
+            SerialMon.print("temperature: ");
             SerialMon.println(temperature);
+            SerialMon.print("humidity: ");
             SerialMon.println(humidity);
+            SerialMon.print("pop: ");
+            SerialMon.println(pop);
             got_data_flag = true;
         } else {
             timer = millis();
@@ -115,6 +121,9 @@ void loop()
         display(show_text, 100);
         // 顯示濕度
         show_text = "Hum:" + String(humidity, 0) + "%";
+        display(show_text, 100);
+        // 顯示降雨機率
+        show_text = "Pop:" + String(pop, 0) + "%";
         display(show_text, 100);
     } else {
         display("Get Error !!", 60);
